@@ -1,14 +1,10 @@
+const int ledPin = 2;
+const int motorPinA = 9;
+const int motorPinB = 10;
+const int switchPin = 12;
 
-#include<Metro.h>
-
-const int ledPin = 10;
-const int motorPinA = 11;
-const int motorPinB = 12;
-const int switchPin = 13;
-
-boolean ledState = false;
-
-Metro ledMetro = Metro(1000);  // Creating an object for Metro Class to use the methods in it
+bool ledState = HIGH;
+int elapsedTime;
 
 void setup() {
   pinMode(switchPin, INPUT);
@@ -18,10 +14,13 @@ void setup() {
 }
 
 void loop() {
-  if(ledMetro.check())  // If 1000ms (1 sec) time elapses the check method will give TRUE
+  static int startTime = millis();
+  elapsedTime = millis() - startTime;
+  if(elapsedTime >= 500)  // If 1000ms (1 sec) time elapses the check method will give TRUE
   {
     ledState = !ledState;
     digitalWrite(ledPin, ledState);
+    startTime = millis();
   }
   if(digitalRead(switchPin) == HIGH)
   {
